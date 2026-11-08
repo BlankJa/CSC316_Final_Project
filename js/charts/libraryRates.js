@@ -21,7 +21,7 @@ import { renderPlaceholder } from '../utils/placeholder.js';
 
 export function renderLibraryRates(selector, data, options = {}) {
   renderPlaceholder(selector, {
-    title: 'Visualization in development',
-    text: 'Physical library branches per 10,000 residents, by neighbourhood income group. Owner: Ken.',
+    label: 'In development · owner: Ken',
+    skeleton: 'bars',
   });
 }

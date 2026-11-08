@@ -1,9 +1,9 @@
 // Hook: 158 schematic dots, 69 of which fade to hollow as a counter climbs.
 // The dots are not a map and dot order is arbitrary: no dot stands for a real neighbourhood.
 
-const CELL_TARGET = 24;
-const CELL_MAX = 30;
-const MIN_COLUMNS = 16;
+const CELL_TARGET = 44;
+const CELL_MAX = 46;
+const MIN_COLUMNS = 14;
 const MAX_COLUMNS = 20;
 const HOLD_MS = 500;
 const SPREAD_MS = 2200;
@@ -26,34 +26,39 @@ export function renderHook(selector, data, options = {}) {
   const root = container.append('div').attr('class', 'hook');
 
   const stats = root.append('div').attr('class', 'hook__stats');
-  const countStat = stats.append('p').attr('class', 'hook__stat');
-  const countNum = countStat.append('span').attr('class', 'hook__num');
-  const countText = countNum.append('span').attr('class', 'hl');
-  countStat.append('span').attr('class', 'hook__stat-label')
+  const countStat = stats.append('p').attr('class', 'stat stat--surprise');
+  const countText = countStat.append('span').attr('class', 'hook__num');
+  countStat.append('span').attr('class', 'stat__label')
     .text(`of ${total} neighbourhoods have no physical library branch inside their boundaries`);
-  const percentStat = stats.append('p').attr('class', 'hook__stat');
+  const percentStat = stats.append('p').attr('class', 'stat');
   const percentText = percentStat.append('span').attr('class', 'hook__num');
-  percentStat.append('span').attr('class', 'hook__stat-label').text('of all neighbourhoods');
-
-  const replay = stats.append('button')
-    .attr('class', 'hook__replay')
-    .attr('type', 'button')
-    .text('Replay')
-    .property('hidden', prefersReducedMotion());
+  percentStat.append('span').attr('class', 'stat__label').text('of all neighbourhoods');
+  const branchStat = stats.append('p').attr('class', 'stat');
+  branchStat.append('span').attr('class', 'hook__num').text(branches);
+  branchStat.append('span').attr('class', 'stat__label').text('library branches');
 
   const gridColumn = root.append('div').attr('class', 'hook__grid');
   const svg = gridColumn.append('svg')
     .attr('role', 'img')
     .attr('aria-label', `Schematic of ${total} dots, one per neighbourhood. ${withBranch} are filled and ${without} are hollow: ${percent(without)} of neighbourhoods have no branch inside their boundaries.`);
 
-  gridColumn.append('p').attr('class', 'hook__schematic')
+  const footer = root.append('div').attr('class', 'hook__footer');
+  const key = footer.append('div');
+
+  const replay = footer.append('button')
+    .attr('class', 'hook__replay')
+    .attr('type', 'button')
+    .text('Replay')
+    .property('hidden', prefersReducedMotion());
+
+  key.append('p').attr('class', 'hook__schematic')
     .text('Schematic - each dot is one neighbourhood, not drawn to location');
 
-  const legend = gridColumn.append('p').attr('class', 'hook__legend');
+  const legend = key.append('p').attr('class', 'hook__legend');
   legend.append('span').html(`<svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6" style="fill:var(--accent);stroke:var(--accent);stroke-width:1.5"/></svg>${withBranch} with a branch inside`);
   legend.append('span').html(`<svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6" style="fill:none;stroke:var(--accent);stroke-width:1.5"/></svg>${without} without a branch inside`);
 
-  gridColumn.append('p').attr('class', 'hook__order')
+  key.append('p').attr('class', 'hook__order')
     .text('Dot order is arbitrary. A dot does not identify a specific neighbourhood.');
 
   const dots = svg.selectAll('circle')
@@ -128,10 +133,12 @@ export function renderHook(selector, data, options = {}) {
   }
 
   showLit();
+  // Start once most of the grid is on screen, even if the viewport is shorter than the grid.
+  const startThreshold = Math.min(0.75, (window.innerHeight * 0.7) / svg.node().getBoundingClientRect().height);
   const startObserver = new IntersectionObserver((entries) => {
     if (!entries.some((entry) => entry.isIntersecting)) return;
     startObserver.disconnect();
     play();
-  }, { threshold: 0.5 });
-  startObserver.observe(root.node());
+  }, { threshold: startThreshold });
+  startObserver.observe(svg.node());
 }

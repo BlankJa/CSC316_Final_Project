@@ -29,7 +29,7 @@ import { renderPlaceholder } from '../utils/placeholder.js';
 
 export function renderTreemap(selector, data, options = {}) {
   renderPlaceholder(selector, {
-    title: 'Visualization in progress - owner: Jacob',
-    text: 'Treemap of the 2025 approved gross operating budget for 8 selected services.',
+    label: 'In development · owner: Jacob',
+    skeleton: 'treemap',
   });
 }

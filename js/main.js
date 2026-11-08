@@ -67,6 +67,86 @@ function setUpProgressNav() {
   [titleScreen, ...sections].forEach((el) => observer.observe(el));
 }
 
+// Light nav text over the dark hero, dark text everywhere else.
+function setUpNavTheme() {
+  const nav = document.querySelector('.progress');
+  const hero = document.querySelector('.hero');
+  const observer = new IntersectionObserver(([entry]) => {
+    nav.classList.toggle('progress--on-dark', entry.isIntersecting);
+  }, { rootMargin: `-${nav.offsetHeight + 1}px 0px 0px 0px` });
+  observer.observe(hero);
+}
+
+// Moves the hero scan beam. Above the beam the skyline shows as an x-ray wireframe.
+// The markup already holds the static half-scanned state used for reduced motion.
+function setUpHeroScan() {
+  const REST_Y = 430;
+  const BOTTOM_Y = 690;
+  const FOLLOW_RANGE = 120;
+  const DOWN_MS = 2400;
+  const BACK_MS = 1000;
+
+  const hero = document.querySelector('.hero');
+  const beam = document.getElementById('scan-beam');
+  const doneRect = document.getElementById('scan-done-rect');
+  const todoRect = document.getElementById('scan-todo-rect');
+
+  function setBeam(y) {
+    beam.setAttribute('transform', `translate(0 ${y})`);
+    doneRect.setAttribute('height', y);
+    todoRect.setAttribute('y', y);
+    todoRect.setAttribute('height', 700 - y);
+  }
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const easeInOut = (t) => (t < 0.5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2);
+  const easeOut = (t) => 1 - (1 - t) ** 3;
+  let current = REST_Y;
+  let target = REST_Y;
+  let followFrame = null;
+  let swept = false;
+
+  function follow() {
+    current += (target - current) * 0.08;
+    setBeam(current);
+    followFrame = Math.abs(target - current) > 0.5 ? requestAnimationFrame(follow) : null;
+  }
+
+  function requestFollow() {
+    if (swept && followFrame === null) followFrame = requestAnimationFrame(follow);
+  }
+
+  hero.addEventListener('pointermove', (event) => {
+    if (event.pointerType === 'touch') return;
+    const rect = hero.getBoundingClientRect();
+    target = REST_Y + ((event.clientY - rect.top) / rect.height - 0.5) * 2 * FOLLOW_RANGE;
+    requestFollow();
+  });
+  hero.addEventListener('pointerleave', () => {
+    target = REST_Y;
+    requestFollow();
+  });
+
+  const start = performance.now();
+  function sweep(now) {
+    const elapsed = now - start;
+    if (elapsed < DOWN_MS) {
+      setBeam(BOTTOM_Y * easeInOut(elapsed / DOWN_MS));
+      requestAnimationFrame(sweep);
+    } else if (elapsed < DOWN_MS + BACK_MS) {
+      setBeam(BOTTOM_Y + (REST_Y - BOTTOM_Y) * easeOut((elapsed - DOWN_MS) / BACK_MS));
+      requestAnimationFrame(sweep);
+    } else {
+      setBeam(REST_Y);
+      swept = true;
+      requestFollow();
+    }
+  }
+  setBeam(0);
+  requestAnimationFrame(sweep);
+}
+
 function setUpChecklist() {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
@@ -85,5 +165,7 @@ function setUpChecklist() {
 
 setUpReveals();
 setUpProgressNav();
+setUpNavTheme();
+setUpHeroScan();
 setUpChecklist();
 CHARTS.forEach(loadChart);

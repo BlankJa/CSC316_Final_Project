@@ -29,7 +29,7 @@ import { renderPlaceholder } from '../utils/placeholder.js';
 
 export function renderGrossNet(selector, data, options = {}) {
   renderPlaceholder(selector, {
-    title: 'Visualization in progress - owner: Jacob',
-    text: "Comparison of Children's Services and Toronto Public Library, gross vs net.",
+    label: 'In development · owner: Jacob',
+    skeleton: 'slope',
   });
 }

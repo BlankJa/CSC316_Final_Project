@@ -1,41 +1,51 @@
 /* City X-ray shared design tokens.
-   Use these in every chart: .style('fill', 'var(--teal)') in D3, var(--teal) in CSS.
+   Use these in every chart: .style('fill', 'var(--accent)') in D3, var(--accent) in CSS.
 
-   Contrast rules (WCAG AA, measured):
-   - --ink is safe on --paper, --card and every pastel (8.4:1 or better).
-   - --muted is for text on --paper or --card only (4.56:1 on paper). Never on a pastel.
-   - --accent is safe as text on --paper or --card (5.4:1), and as a mark on them.
-   - Pastels are too light to be a mark on their own against paper (under 3:1).
-     Give a pastel shape an --ink outline, and label it directly.
+   Contrast rules (WCAG AA):
+   - --text, --ink and --muted are safe as text on --bg and --surface.
+   - --accent is the data and link colour on light backgrounds. Safe as text there.
+   - --xray and --warm fail as text on light backgrounds. Use them on --ink, or as
+     strokes and small markers next to a text label.
+   - Tints are fills only. Put --text on them and give them a --ink outline, because
+     a tint alone is under 3:1 against the page.
    - Never use colour as the only signal: add a label, pattern or position. */
 
 :root {
-  /* Surfaces and text */
-  --paper: #FBF8F1;
-  --card: #FFFDF8;
-  --ink: #1F2A37;
-  --muted: #6B7280;
-  --grid: #E8E2D4;
+  /* Core palette */
+  --ink: #0E1A2B;
+  --text: #1F2937;
+  --muted: #5B6472;
+  --bg: #F7F8FA;
+  --surface: #FFFFFF;
+  --rule: #DDE1E7;
 
-  /* Storyboard pastels */
-  --peach: #F6C9A8;
-  --rose: #F2B5BE;
-  --teal: #9FD3CF;
-  --lime: #C9E59A;
-  --highlight: #F3E88E;
+  /* Accents */
+  --xray: #22D3EE;
+  --accent: #0F766E;
+  --warm: #F59E0B;
 
-  /* Emphasis and focus */
-  --accent: #2F6F73;
+  /* Category tints for charts, in teal, blue and amber families */
+  --tint-teal: #BFE7E1;
+  --tint-teal-deep: #7CCFC2;
+  --tint-blue: #C7DCF5;
+  --tint-amber: #FCE3B0;
 
-  /* Fonts: the handwritten font is for small annotations only, never chart labels */
+  /* Text on dark surfaces */
+  --on-dark: #EEF3F8;
+  --on-dark-muted: #AEBBCB;
+  --panel-deep: #06101E;
+
+  /* Skeleton shapes for charts still in development */
+  --skeleton: #E7EAEF;
+
+  /* Fonts */
+  --font-display: "Space Grotesk", "Inter", system-ui, sans-serif;
   --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --font-hand: "Caveat", "Comic Sans MS", cursive;
 
   /* Type scale */
-  --text-small: 0.9rem;
-  --text-body: 1.0625rem;
-  --text-lead: 1.25rem;
-  --text-hand: 1.35rem;
+  --text-small: 0.875rem;
+  --text-body: clamp(1.0625rem, 1rem + 0.25vw, 1.125rem);
+  --text-lead: clamp(1.1875rem, 1.1rem + 0.45vw, 1.375rem);
 
   /* Spacing */
   --space-1: 0.25rem;
@@ -47,16 +57,23 @@
   --space-7: 4rem;
 
   /* Layout */
-  --content-max: 68rem;
+  --content-max: 76rem;
   --gutter: 1rem;
-  --radius: 4px;
-  --line: 1.5px solid var(--ink);
-  --nav-offset: 5.5rem;
+  --radius: 10px;
+  --nav-height: 2.75rem;
+  --section-gap: clamp(4rem, 3rem + 5vw, 7.5rem);
+
+  /* Earlier names, still used by the stub TODO blocks and README palette table */
+  --paper: var(--bg);
+  --card: var(--surface);
+  --grid: var(--rule);
+  --peach: var(--tint-amber);
+  --rose: var(--tint-blue);
+  --teal: var(--tint-teal);
+  --lime: var(--tint-teal-deep);
+  --highlight: var(--tint-amber);
 }
 
 @media (min-width: 48rem) {
-  :root {
-    --gutter: 2rem;
-    --nav-offset: 4.5rem;
-  }
+  :root { --gutter: 2rem; }
 }
