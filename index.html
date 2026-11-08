@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/budget-charts.css">
+  <link rel="stylesheet" href="css/library-chart.css">
 </head>
 <body>
   <a class="skip-link" href="#hook">Skip to the story</a>
@@ -198,11 +199,12 @@
         <div class="split">
           <div class="split__chart">
             <figure class="chart-figure">
-              <figcaption class="visually-hidden">Chart in development. Physical library branches per 10,000 residents: lower income 0.344, middle income 0.334, higher income 0.417.</figcaption>
+              <figcaption class="visually-hidden">Bar chart of physical library branches per 10,000 residents: lower income 0.344, middle income 0.334, higher income 0.417. Counting only branches open when the inventory was downloaded: 0.314, 0.302 and 0.417.</figcaption>
               <div id="library-chart" class="chart"></div>
             </figure>
-            <p class="note">Income groups: lower &le; CAD 79,000, middle CAD 79,000-90,000, higher &gt; CAD 90,000 (2020 median household income, 2021 Census population).</p>
+            <p class="note">Income groups split Toronto's 158 neighbourhoods into rough thirds by 2020 median household income: lower &le; CAD 79,000, middle CAD 79,000-90,000, higher &gt; CAD 90,000. Population is the 2021 Census count of people in private households.</p>
             <p class="note">The rate does not rise steadily with income; the gap is mainly between the higher group and the other two.</p>
+            <p class="note">Six branches, all in the lower and middle groups, were closed in October 2026. Counting only open branches, the higher group's rate is about 33% above the lower group's.</p>
           </div>
 
           <aside class="split__side">

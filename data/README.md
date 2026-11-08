@@ -9,7 +9,7 @@ Connect a new file by setting `dataPath` for its chart in the `CHARTS` list in `
 | `hook_summary.json` | Present | `js/charts/hook.js` | Connie |
 | `operating_budget_2025.csv` | Present | `js/charts/treemap.js`, `js/charts/grossNet.js` | Jacob |
 | `operating_budget_2025_lines.csv` | Present | Treemap lenses and itemised receipts | Jacob |
-| `library_rates.csv` | To add (proposed name) | `js/charts/libraryRates.js` | Ken |
+| `library_rates.csv` | Present | `js/charts/libraryRates.js` | Ken |
 
 `js/charts/lens.js` keeps its short text as a constant at the top of the file. It loads no data file.
 
@@ -55,15 +55,29 @@ To rebuild from the group site’s root, use Python with `openpyxl` 3.1.5 and ru
 
 ## library_rates.csv
 
-Proposed structure; Ken can change it and update this section.
+One row per neighbourhood income group, 3 rows.
 
 | Column | Type | Units |
 |---|---|---|
 | `income_group` | text | Lower, Middle, Higher |
-| `income_range` | text | Lower: at most CAD 79,000. Middle: CAD 79,000-90,000. Higher: over CAD 90,000 |
-| `branches_per_10k` | number | physical branches per 10,000 residents |
+| `income_above`, `income_up_to` | number or empty | CAD, 2020 median household income; a group holds neighbourhoods with income above `income_above` and at most `income_up_to` |
+| `neighbourhoods` | number | neighbourhoods in the group |
+| `neighbourhoods_without_branch` | number | neighbourhoods with no physical branch inside their boundaries |
+| `population` | number | 2021 Census people in private households (25% sample data) |
+| `branches`, `branches_open` | number | physical branches; those open when the inventory was downloaded |
+| `branches_per_10k`, `branches_open_per_10k` | number | branches per 10,000 residents |
 
-Income is 2020 median household income. Population is from the 2021 Census. Values: Lower 0.344, Middle 0.334, Higher 0.417.
+| Group | Income | Neighbourhoods | Branches (open) | Per 10,000 (open only) |
+|---|---|---|---|---|
+| Lower | at most CAD 79,000 | 54 | 35 (32) | 0.344 (0.314) |
+| Middle | CAD 79,000-90,000 | 52 | 31 (28) | 0.334 (0.302) |
+| Higher | over CAD 90,000 | 52 | 34 (34) | 0.417 (0.417) |
+
+Branches are the 100 inventory records with `PhysicalBranch = 1`, joined to the 158-neighbourhood model by `NBHDNo`; every branch's neighbourhood name matches. The cut points are the tertiles of the 158 neighbourhood medians; neighbourhoods exactly at a cut point (4 at CAD 79,000 and 7 at CAD 90,000) join the lower group, which is why the groups are not equal. Using `<` instead of `<=` would give 0.365, 0.289 and 0.425, so the boundary rule must stay as published. Each rate is the group's summed branches divided by its summed population, times 10,000.
+
+Six branches have the whole `Hours` field set to `Closed`: Centennial, Dawes Road, Flemingdon Park, Junction Triangle, Pleasant View and Woodside Square. Centennial, Dawes Road, Pleasant View and Woodside Square are listed on [TPL's renovation page](https://tpl.ca/about-the-library/renovations/). The main figures keep all 100 branches because the measure describes branch provision, not opening on a given day. The `_open` columns show how much the comparison depends on that choice.
+
+To rebuild from the group site's root, put the two snapshots in `data/raw/` as `library_branches.csv` ([Library Branch General Information](https://ckan0.cf.opendata.inter.prod-toronto.ca/dataset/f5aa9b07-da35-45e6-b31f-d6790eb9bd9b/resource/e69b6ebb-8688-4533-8fd9-b63bff1cacdd/download/tpl-branch-general-information-4326.csv)) and `neighbourhood_profiles_2021.xlsx` ([Neighbourhood Profiles, 158 model](https://ckan0.cf.opendata.inter.prod-toronto.ca/dataset/6e19a90f-971c-46b3-852c-0c48c436d1fc/resource/19d4a806-7385-4889-acf2-256f1e079060/download/nbhd_2021_census_profile_full_158model.xlsx)), then run `python3 scripts/clean_library_rates.py` with `openpyxl` 3.1.5. The script checks both files' SHA-256 against the 18 October 2026 snapshots. The library inventory is updated in place, so a fresh download will fail that check until the script and figures are reviewed.
 
 ## Sources
 
