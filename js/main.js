@@ -5,8 +5,8 @@ import { renderError } from './utils/placeholder.js';
 // To connect a chart's data, set its dataPath. CSV and JSON are detected from the extension.
 const CHARTS = [
   { selector: '#hook-chart', module: './charts/hook.js', exportName: 'renderHook', dataPath: 'data/hook_summary.json' },
-  { selector: '#treemap-chart', module: './charts/treemap.js', exportName: 'renderTreemap', dataPath: null },
-  { selector: '#grossnet-chart', module: './charts/grossNet.js', exportName: 'renderGrossNet', dataPath: null },
+  { selector: '#treemap-chart', module: './charts/treemap.js', exportName: 'renderTreemap', dataPath: 'data/operating_budget_2025.csv' },
+  { selector: '#grossnet-chart', module: './charts/grossNet.js', exportName: 'renderGrossNet', dataPath: 'data/operating_budget_2025.csv' },
   { selector: '#library-chart', module: './charts/libraryRates.js', exportName: 'renderLibraryRates', dataPath: null },
   { selector: '#lens-chart', module: './charts/lens.js', exportName: 'renderLens', dataPath: null },
 ];
@@ -20,7 +20,7 @@ function loadData(path) {
 async function loadChart({ selector, module, exportName, dataPath, options = {} }) {
   try {
     const [chart, data] = await Promise.all([import(module), loadData(dataPath)]);
-    chart[exportName](selector, data, options);
+    await chart[exportName](selector, data, options);
   } catch (error) {
     console.error(`Could not render ${selector}:`, error);
     renderError(selector, window.d3 ? dataPath : null);

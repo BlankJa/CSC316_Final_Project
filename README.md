@@ -28,8 +28,8 @@ There is no build step. D3 v7.9.0 and the fonts load from CDNs, so you need an i
 | `js/main.js` | Chart loading, scroll observers, progress nav | Connie |
 | `js/charts/hook.js` | Section 1: 158-dot hook | Connie |
 | `js/charts/lens.js` | Section 5: X-ray lens | Connie |
-| `js/charts/treemap.js` | Section 2: budget treemap (stub) | Jacob |
-| `js/charts/grossNet.js` | Section 3: gross vs net (stub) | Jacob |
+| `js/charts/treemap.js` | Section 2: budget treemap, spending lenses and $100 receipts | Jacob |
+| `js/charts/grossNet.js` | Section 3: gross vs net budget comparison | Jacob |
 | `js/charts/libraryRates.js` | Section 4: per-resident rates (stub) | Ken |
 | `js/utils/placeholder.js` | Shared placeholder and error cards | Connie |
 | `js/utils/tooltip.js` | Shared tooltip helper | Connie |
