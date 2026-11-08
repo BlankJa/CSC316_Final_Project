@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>City X-ray: Look beneath the headline</title>
+  <meta name="description" content="A data story about how Toronto's public resources are distributed, and why headline totals can mislead.">
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='17' cy='17' r='12' fill='none' stroke='%232F6F73' stroke-width='4'/%3E%3Cpath d='M26 26L36 36' stroke='%232F6F73' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E">
+
+  <!-- Marks JS as available so reveal animations never hide content when scripts cannot run. -->
+  <script>
+    if (location.protocol !== 'file:') document.documentElement.classList.add('js');
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Inter:wght@400;500;600;800&display=swap">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#hook">Skip to the story</a>
+
+  <div id="file-warning" class="file-warning" hidden>
+    This page needs a local server to load its charts. In this folder run
+    <code>python3 -m http.server 8000</code>, then open
+    <code>http://localhost:8000</code>.
+  </div>
+
+  <!-- Shared icons. Reuse with <svg><use href="#icon-lens"/></svg>. -->
+  <svg class="sprite" aria-hidden="true" focusable="false">
+    <symbol id="icon-lens" viewBox="0 0 40 40">
+      <circle cx="17" cy="17" r="12" fill="none" stroke="currentColor" stroke-width="2.5"/>
+      <circle cx="17" cy="17" r="8.5" fill="none" stroke="currentColor" stroke-width="1"/>
+      <path d="M26 26 L36 36" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="icon-arrow" viewBox="0 0 40 60">
+      <path d="M20 3 C16 18 24 32 20 52 M10 42 L20 55 L30 42" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <filter id="sketch">
+      <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="4"/>
+      <feDisplacementMap in="SourceGraphic" scale="2.2"/>
+    </filter>
+  </svg>
+
+  <!-- 0. Title screen -->
+  <header class="title-screen" id="top" data-stage-none>
+    <svg class="title-screen__lens" aria-hidden="true"><use href="#icon-lens"/></svg>
+    <h1>City X-ray: <span class="hl">Look beneath the headline</span></h1>
+    <p class="title-screen__sub">How Toronto's public resources are distributed, and why headline totals can mislead.</p>
+    <p class="title-screen__intro">Six short notes on libraries and budgets show what one big number can leave out.</p>
+    <a class="scroll-cue" href="#hook">
+      <span>Scroll to begin</span>
+      <svg aria-hidden="true"><use href="#icon-arrow"/></svg>
+    </a>
+  </header>
+
+  <!-- Sticky story progress -->
+  <nav class="progress" aria-label="Story progress">
+    <ol class="progress__list">
+      <li><a href="#hook" data-target="hook"><span class="progress__num" aria-hidden="true">1</span><span class="progress__label">Hook</span></a></li>
+      <li><a href="#rising-1" data-target="rising-1"><span class="progress__num" aria-hidden="true">2</span><span class="progress__label">Rising 1</span></a></li>
+      <li><a href="#rising-2" data-target="rising-2"><span class="progress__num" aria-hidden="true">3</span><span class="progress__label">Rising 2</span></a></li>
+      <li><a href="#rising-3" data-target="rising-3"><span class="progress__num" aria-hidden="true">4</span><span class="progress__label">Rising 3</span></a></li>
+      <li><a href="#main-message" data-target="main-message"><span class="progress__num" aria-hidden="true">5</span><span class="progress__label">Main message</span></a></li>
+      <li><a href="#solution" data-target="solution"><span class="progress__num" aria-hidden="true">6</span><span class="progress__label">Solution</span></a></li>
+    </ol>
+    <p class="progress__current" aria-hidden="true"></p>
+  </nav>
+
+  <main class="story">
+
+    <!-- 1. Hook (Connie) -->
+    <section class="panel reveal" id="hook" data-stage="Hook" aria-labelledby="hook-title">
+      <p class="panel__tag">[1] Hook</p>
+      <svg class="panel__lens" aria-hidden="true"><use href="#icon-lens"/></svg>
+
+      <svg class="skyline" viewBox="0 0 800 200" aria-hidden="true" focusable="false">
+        <g filter="url(#sketch)" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 192 H796"/>
+          <path d="M10 192 V160 H30 V130 H52 V155 H68 V118 H92 V150 H112 V170 H128 V192"/>
+          <path d="M128 192 C150 130 225 130 248 192 M150 192 C168 150 208 150 226 192"/>
+          <path d="M248 192 V165 H268 V140 H288 V192"/>
+          <path d="M322 192 L328 90 M342 192 L336 90 M331 192 L331.5 90 M333 192 L332.5 90"/>
+          <path d="M318 84 C318 76 346 76 346 84 C346 92 318 92 318 84 Z"/>
+          <path d="M329 77 L332 8 L335 77"/>
+          <path d="M342 192 H358 V140 H382 V160 H398 V110 H428 V150 H446 V95 H476 V135 H492 V120 H520 V150 H538 V85 H548 V72 H556 V85 H570 V130 H590 V105 H620 V145 H640 V160 H665 V128 H690 V165 H715 V150 H740 V175 H770 V192"/>
+        </g>
+      </svg>
+
+      <h2 id="hook-title">100 library branches. One in every neighbourhood?</h2>
+      <p class="panel__lead">Toronto has 158 neighbourhoods. Many of them have no physical library branch inside their boundaries.</p>
+
+      <figure class="chart-figure">
+        <figcaption class="visually-hidden">Of Toronto's 158 neighbourhoods, 69, or 43.7%, have no physical library branch inside their boundaries. The dots are a schematic, not a map.</figcaption>
+        <div id="hook-chart" class="chart"></div>
+      </figure>
+
+      <p class="note">Residents may still use branches in nearby neighbourhoods. This shows location, not travel access.</p>
+    </section>
+
+    <div class="connector" aria-hidden="true"><svg><use href="#icon-arrow"/></svg></div>
+
+    <!-- 2. Rising insight 1 (Jacob) -->
+    <section class="panel reveal" id="rising-1" data-stage="Rising 1" aria-labelledby="rising-1-title">
+      <p class="panel__tag">[2] Rising insight 1</p>
+      <svg class="panel__lens" aria-hidden="true"><use href="#icon-lens"/></svg>
+      <h2 id="rising-1-title">Where does the budget go?</h2>
+
+      <div class="panel__body">
+        <figure class="chart-figure">
+          <figcaption class="visually-hidden">Treemap in progress. Four of eight selected services make up CAD 7.158 billion, or 73.3%, of the CAD 9.766 billion selected total in the 2025 approved gross operating budget.</figcaption>
+          <div id="treemap-chart" class="chart"></div>
+        </figure>
+
+        <div class="facts">
+          <p class="big-number"><span class="hl">73.3%</span></p>
+          <p class="big-number__label">CAD 7.158B of the CAD 9.766B selected total, 2025 approved gross operating budget</p>
+          <p>Four of our eight selected services - TTC conventional transit, Children's Services, Toronto Police Service, and Toronto Employment &amp; Social Services - make up CAD 7.158B, or 73.3%, of the CAD 9.766B selected total.</p>
+          <p class="note">Approved 2025 operating allocations, not actual spending. Share is of 8 selected services, not the whole city budget.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="connector" aria-hidden="true"><svg><use href="#icon-arrow"/></svg></div>
+
+    <!-- 3. Rising insight 2 (Jacob) -->
+    <section class="panel reveal" id="rising-2" data-stage="Rising 2" aria-labelledby="rising-2-title">
+      <p class="panel__tag">[3] Rising insight 2</p>
+      <svg class="panel__lens" aria-hidden="true"><use href="#icon-lens"/></svg>
+      <h2 id="rising-2-title">Change the lens: gross vs net</h2>
+
+      <div class="panel__body">
+        <figure class="chart-figure">
+          <figcaption class="visually-hidden">Comparison in progress. Children's Services has the larger gross budget, CAD 1,672.5 million against CAD 268.9 million for Toronto Public Library. By net expenditure the ranking reverses: CAD 94.8 million against CAD 247.1 million.</figcaption>
+          <div id="grossnet-chart" class="chart"></div>
+        </figure>
+
+        <div class="facts">
+          <table class="compare">
+            <caption class="visually-hidden">Gross and net 2025 budget for Children's Services and Toronto Public Library, in CAD millions</caption>
+            <thead>
+              <tr><th scope="col">2025</th><th scope="col">Children's Services</th><th scope="col">Toronto Public Library</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">Gross</th><td><strong>CAD 1,672.5M</strong><span class="compare__tag">larger</span></td><td>CAD 268.9M</td></tr>
+              <tr><th scope="row">Net</th><td>CAD 94.8M</td><td><strong>CAD 247.1M</strong><span class="compare__tag">larger</span></td></tr>
+            </tbody>
+          </table>
+          <p class="lead-line"><span class="hl">The ranking reverses.</span></p>
+          <p class="definition"><strong>Net expenditure</strong> = gross expenditure minus budgeted revenues (e.g., provincial and federal funding).</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="connector" aria-hidden="true"><svg><use href="#icon-arrow"/></svg></div>
+
+    <!-- 4. Rising insight 3 (Ken) -->
+    <section class="panel reveal" id="rising-3" data-stage="Rising 3" aria-labelledby="rising-3-title">
+      <p class="panel__tag">[4] Rising insight 3</p>
+      <svg class="panel__lens" aria-hidden="true"><use href="#icon-lens"/></svg>
+      <h2 id="rising-3-title">How do library branches compare per resident?</h2>
+
+      <div class="panel__body">
+        <figure class="chart-figure">
+          <figcaption class="visually-hidden">Chart in development. Physical library branches per 10,000 residents: lower income 0.344, middle income 0.334, higher income 0.417.</figcaption>
+          <div id="library-chart" class="chart"></div>
+        </figure>
+
+        <div class="facts">
+          <p class="facts__heading">Physical branches per 10,000 residents</p>
+          <dl class="rates">
+            <div><dt>Lower income</dt><dd>0.344</dd></div>
+            <div><dt>Middle income</dt><dd>0.334</dd></div>
+            <div><dt>Higher income</dt><dd><span class="hl">0.417</span></dd></div>
+          </dl>
+          <p><strong>Higher is about 21% above Lower.</strong></p>
+          <p class="note">Income groups: lower &le; CAD 79,000, middle CAD 79,000-90,000, higher &gt; CAD 90,000 (2020 median household income, 2021 Census population).</p>
+          <p class="note">The rate does not rise steadily with income; the gap is mainly between the higher group and the other two.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="connector" aria-hidden="true"><svg><use href="#icon-arrow"/></svg></div>
+
+    <!-- 5. Main message (Connie) -->
+    <section class="panel reveal" id="main-message" data-stage="Main message" aria-labelledby="main-message-title">
+      <p class="panel__tag">[5] Main message</p>
+      <svg class="panel__lens" aria-hidden="true"><use href="#icon-lens"/></svg>
+      <h2 id="main-message-title">Look beneath the headline</h2>
+
+      <figure class="chart-figure">
+        <figcaption class="visually-hidden">Three headline claims and what lies beneath them. Gross budgets rank Children's Services above the Library, but net budgets reverse that. Branch rates per 10,000 residents differ by income group. And 100 branches still leave 69 of 158 neighbourhoods without one inside.</figcaption>
+        <div id="lens-chart" class="chart"></div>
+      </figure>
+
+      <p class="main-message">Before judging whether a community is well served, residents should ask what a number includes and how many people it serves.</p>
+      <p class="panel__lead">Headline totals give an incomplete picture of Toronto's public resources.</p>
+      <p class="note">They cannot show how resources compare across services and communities.</p>
+    </section>
+
+    <div class="connector" aria-hidden="true"><svg><use href="#icon-arrow"/></svg></div>
+
+    <!-- 6. Solution -->
+    <section class="panel reveal" id="solution" data-stage="Solution" aria-labelledby="solution-title">
+      <p class="panel__tag">[6] Solution</p>
+      <svg class="panel__lens" aria-hidden="true"><use href="#icon-lens"/></svg>
+      <h2 id="solution-title">How can residents make better comparisons?</h2>
+
+      <div class="check-cards">
+        <label class="check-card">
+          <input class="visually-hidden" type="checkbox">
+          <span class="check-card__box" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M6 17 L13 25 L27 6" pathLength="1"/></svg></span>
+          <span class="check-card__text">
+            <strong>Check <span class="hl hl--lime">gross vs net</span></strong>
+            <span>Ask what each budget figure includes.</span>
+          </span>
+        </label>
+        <label class="check-card">
+          <input class="visually-hidden" type="checkbox">
+          <span class="check-card__box" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M6 17 L13 25 L27 6" pathLength="1"/></svg></span>
+          <span class="check-card__text">
+            <strong>Use <span class="hl hl--lime">per-resident rates</span></strong>
+            <span>Read them alongside total counts.</span>
+          </span>
+        </label>
+        <label class="check-card">
+          <input class="visually-hidden" type="checkbox">
+          <span class="check-card__box" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M6 17 L13 25 L27 6" pathLength="1"/></svg></span>
+          <span class="check-card__text">
+            <strong>Check <span class="hl hl--lime">nearby access</span></strong>
+            <span>Consider travel distance, opening hours and capacity, including branches outside your neighbourhood.</span>
+          </span>
+        </label>
+      </div>
+
+      <p class="closing">Specific funding or siting decisions need more evidence; the first step is asking better questions of the data.</p>
+    </section>
+  </main>
+
+  <!-- 7. Footer -->
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <h2>About the data</h2>
+      <div class="site-footer__cols">
+        <div>
+          <h3>Sources</h3>
+          <p>City of Toronto Open Data:</p>
+          <ul>
+            <li><a href="https://open.toronto.ca/dataset/budget-operating-budget-program-summary-by-expenditure-category/">Operating budget</a>, 2025</li>
+            <li><a href="https://open.toronto.ca/dataset/library-branch-general-information/">Toronto Public Library branch inventory</a>, downloaded October 2026</li>
+            <li><a href="https://open.toronto.ca/dataset/neighbourhood-profiles/">Neighbourhood Profiles</a>, 2021 Census population, 2020 household income</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Limitations</h3>
+          <ul>
+            <li>Approved budgets are not actual spending.</li>
+            <li>Mixed-year snapshot.</li>
+            <li>Associations, not causes.</li>
+            <li>Neighbourhood boundaries are not library service areas.</li>
+          </ul>
+        </div>
+      </div>
+      <p class="site-footer__team">Ken (Henry) Chen, Jacob Zhou, Connie (Mengxuan) Guo</p>
+      <p class="site-footer__status">Prototype I - work in progress</p>
+    </div>
+  </footer>
+
+  <script>
+    if (location.protocol === 'file:') document.getElementById('file-warning').hidden = false;
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+  <script type="module" src="js/main.js" onerror="document.documentElement.classList.remove('js')"></script>
+</body>
+</html>
