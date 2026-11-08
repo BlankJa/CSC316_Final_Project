@@ -30,7 +30,9 @@ There is no build step. D3 v7.9.0 and the fonts load from CDNs, so you need an i
 | `js/charts/lens.js` | Section 5: X-ray lens | Connie |
 | `js/charts/treemap.js` | Section 2: budget treemap, spending lenses and $100 receipts | Jacob |
 | `js/charts/grossNet.js` | Section 3: gross vs net budget comparison | Jacob |
-| `js/charts/libraryRates.js` | Section 4: per-resident rates (stub) | Ken |
+| `js/charts/libraryRates.js` | Section 4: library branches per resident by income group | Ken |
+| `css/library-chart.css` | Section 4 chart styles | Ken |
+| `scripts/clean_library_rates.py` | Builds `data/library_rates.csv` | Ken |
 | `js/utils/placeholder.js` | Shared placeholder and error cards | Connie |
 | `js/utils/tooltip.js` | Shared tooltip helper | Connie |
 | `data/` | Cleaned data; see [`data/README.md`](data/README.md) | Each chart's owner |

@@ -1,0 +1,29 @@
+/* Panel 4. Colours and typefaces come from the shared story palette. */
+.library-compare {
+  color: var(--ink);
+  background: var(--card);
+  border: 1px solid var(--sand);
+  border-radius: var(--radius);
+  padding: clamp(12px, 2vw, 24px);
+  font: 500 var(--text-small)/1.45 var(--font-sans);
+  min-height: inherit;
+  display: flex;
+  flex-direction: column;
+}
+p.library-help { color: var(--muted); font-size: .8rem; margin: 0 0 9px; }
+.library-bars { display: block; width: 100%; overflow: visible; }
+.library-axis text { fill: var(--muted); font: 11px var(--font-sans); }
+.library-axis line { stroke: var(--grid); }
+.library-axis-label { fill: var(--muted); font: 600 11px var(--font-sans); }
+.library-bar { cursor: pointer; outline: none; }
+.library-bar-fill { stroke: var(--ink); stroke-width: 1.5; }
+.library-bar.is-active .library-bar-fill, .library-bar:focus-visible .library-bar-fill { stroke-width: 3; }
+.library-bar.is-pinned .library-bar-fill { stroke-dasharray: 6 3; }
+.library-bar:focus-visible .library-bar-fill { stroke: var(--accent); }
+.library-bar-name { fill: var(--ink); font: 650 14px var(--font-sans); }
+.library-bar-range { fill: var(--muted); font: 500 12px var(--font-sans); }
+.library-bar-value {
+  fill: var(--ink); stroke: var(--card); stroke-width: 4px; paint-order: stroke;
+  font: 700 17px var(--font-display); font-variant-numeric: tabular-nums;
+}
+p.library-readout { border-top: 1px solid var(--grid); margin: auto 0 0; padding-top: 12px; font-size: .9rem; min-height: 4.4em; }

@@ -1,0 +1,4 @@
+income_group,income_above,income_up_to,neighbourhoods,neighbourhoods_without_branch,population,branches,branches_open,branches_per_10k,branches_open_per_10k
+Lower,,79000,54,22,1017630,35,32,0.343936,0.314456
+Middle,79000,90000,52,25,927875,31,28,0.334097,0.301765
+Higher,90000,,52,22,815785,34,34,0.416776,0.416776
