@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>City X-ray: Look beneath the headline</title>
   <meta name="description" content="A data story about how Toronto's public resources are distributed, and why headline totals can mislead.">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='17' cy='17' r='12' fill='none' stroke='%230F766E' stroke-width='4'/%3E%3Cpath d='M26 26L36 36' stroke='%230F766E' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='17' cy='17' r='12' fill='none' stroke='%23B5543C' stroke-width='4'/%3E%3Cpath d='M26 26L36 36' stroke='%23B5543C' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E">
 
   <!-- Marks JS as available so reveal animations never hide content when scripts cannot run. -->
   <script>
@@ -14,7 +14,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap">
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
@@ -28,13 +28,13 @@
   </div>
 
   <!-- Sticky story progress -->
-  <nav class="progress progress--on-dark" aria-label="Story progress">
+  <nav class="progress" aria-label="Story progress">
     <div class="progress__inner">
       <ol class="progress__list">
         <li><a href="#hook" data-target="hook"><span class="progress__num" aria-hidden="true">1</span><span class="progress__label">Hook</span></a></li>
-        <li><a href="#rising-1" data-target="rising-1"><span class="progress__num" aria-hidden="true">2</span><span class="progress__label">Rising 1</span></a></li>
-        <li><a href="#rising-2" data-target="rising-2"><span class="progress__num" aria-hidden="true">3</span><span class="progress__label">Rising 2</span></a></li>
-        <li><a href="#rising-3" data-target="rising-3"><span class="progress__num" aria-hidden="true">4</span><span class="progress__label">Rising 3</span></a></li>
+        <li><a href="#rising-1" data-target="rising-1"><span class="progress__num" aria-hidden="true">2</span><span class="progress__label">Budget</span></a></li>
+        <li><a href="#rising-2" data-target="rising-2"><span class="progress__num" aria-hidden="true">3</span><span class="progress__label">Gross vs net</span></a></li>
+        <li><a href="#rising-3" data-target="rising-3"><span class="progress__num" aria-hidden="true">4</span><span class="progress__label">Per resident</span></a></li>
         <li><a href="#main-message" data-target="main-message"><span class="progress__num" aria-hidden="true">5</span><span class="progress__label">Main message</span></a></li>
         <li><a href="#solution" data-target="solution"><span class="progress__num" aria-hidden="true">6</span><span class="progress__label">Solution</span></a></li>
       </ol>
@@ -42,66 +42,63 @@
     </div>
   </nav>
 
-  <!-- 0. Hero: the markup holds the static half-scanned state; main.js animates the beam. -->
+  <!-- 0. Hero: the markup holds the lens at rest; main.js moves it for mouse users. -->
   <header class="hero" id="top" data-stage-none>
-    <svg class="hero__skyline" viewBox="0 0 1600 700" preserveAspectRatio="xMidYMax slice" aria-hidden="true" focusable="false">
+    <svg class="hero__skyline" id="hero-skyline" viewBox="0 0 1600 780" preserveAspectRatio="xMidYMax slice" aria-hidden="true" focusable="false">
       <defs>
-        <path id="sky-back" class="sky-shape" d="M-30 700V512H-26.4V492H-22.7V478H-11.3V492H-7.6V512H-4V700ZM13 700V553H18.5V533H23.9V519H41.1V533H46.5V553H52V700ZM64 700V500H115V700ZM121 700V472H127.7V452H134.4V438H155.6V452H162.3V472H169V700ZM178 700V492H207V700ZM213 700V538H274V700ZM279 700V484H320V700ZM332 700V499L375 477V700ZM392 700V452L454 430V700ZM467 700V537H528V700ZM538 700V487H546.4V475H557.6V487H566V700ZM572 700V455L631 433V700ZM643 700V440H676V700ZM693 700V466L724 444V700ZM737 700V467H753.2V455H774.8V467H791V700ZM797 700V493H856V700ZM872 700V529H928V700ZM941 700V506H986V700ZM995 700V386H1009.1V374H1027.9V386H1042V700ZM1057 700V401L1096 379V700ZM1105 700V402H1153V700ZM1165 700V389L1205 367V700ZM1213 700V405L1270 383V700ZM1285 700V483H1293.5V463H1302.1V449H1328.9V463H1337.5V483H1346V700ZM1355 700V369H1389V700ZM1397 700V409H1404.8V389H1412.7V375H1437.3V389H1445.2V409H1453V700ZM1462 700V491L1510 469V700ZM1520 700V517H1528.4V497H1536.8V483H1563.2V497H1571.6V517H1580V700ZM1590 700V488H1600.5V476H1614.5V488H1625V700ZM1631 700V549H1637.2V529H1643.3V515H1662.7V529H1668.8V549H1675V700Z"/>
-        <path id="sky-mid" class="sky-shape" d="M205 700V455H217.6V443H234.4V455H247V700ZM262 700V442L298 420V700ZM312 700V438H358V700ZM372 700V392H383.4V380H398.6V392H410V700ZM424 700V458H430.2V438H436.3V424H455.7V438H461.8V458H468V700ZM482 700V426L516 404V700ZM530 700V446H542.6V434H559.4V446H572V700ZM586 700V470H622V700ZM946 700V414H959.2V402H976.8V414H990V700ZM1000 700V364H1056V700ZM1066 700V411L1090 385L1114 411V700ZM1124 700V347H1142.6V335H1167.4V347H1186V700ZM1196 700V432H1203V412H1210V398H1232V412H1239V432H1246V700ZM1256 700V372H1275.4V326H1280.6V372H1300V700ZM1310 700V420H1366V700ZM1376 700V414L1420 392V700ZM1430 700V446H1445V434H1465V446H1480V700ZM1490 700V424H1532V700ZM1542 700V502H1549.3V482H1556.6V468H1579.4V482H1586.7V502H1594V700Z"/>
-        <path id="sky-landmarks" class="sky-shape" d="M632 700V606Q740 520 848 606V700ZM836 700C848 560 864 440 868 335L866 330Q842 322 840 312L840 300Q844 286 868 280L871 200L866 197L866 186L872 182L876 178L879 79L881 79L884 178L888 182L894 186L894 197L889 200L892 280Q916 286 920 300L920 312Q918 322 894 330L892 335C896 440 912 560 924 700Z"/>
-        <path id="sky-front" class="sky-shape" d="M-20 700V548H42V700ZM52 700V502H65.2V490H82.8V502H96V700ZM106 700V554L158 532V700ZM168 700V484H208V700ZM218 700V558H225.6V538H233.1V524H256.9V538H264.4V558H272V700ZM282 700V472H293.4V460H308.6V472H320V700ZM330 700V510H380V700ZM390 700V510L434 488V700ZM444 700V538H460.8V526H483.2V538H500V700ZM510 700V512H552V700ZM560 700V558H596V700ZM934 700V522H980V700ZM990 700V474H1002V462H1018V474H1030V700ZM1040 700V534H1048.1V514H1056.2V500H1081.8V514H1089.9V534H1098V700ZM1108 700V468L1152 446V700ZM1162 700V488H1216V700ZM1226 700V434H1238V422H1254V434H1266V700ZM1276 700V510H1334V700ZM1344 700V496H1350.2V476H1356.3V462H1375.7V476H1381.8V496H1388V700ZM1398 700V496H1413.6V484H1434.4V496H1450V700ZM1460 700V496L1500 474V700ZM1510 700V528H1568V700ZM1576 700V496H1591V484H1611V496H1626V700Z"/>
+        <path id="sky-back" d="M-30 700V512H-26.4V492H-22.7V478H-11.3V492H-7.6V512H-4V700ZM13 700V553H18.5V533H23.9V519H41.1V533H46.5V553H52V700ZM64 700V500H115V700ZM121 700V472H127.7V452H134.4V438H155.6V452H162.3V472H169V700ZM178 700V492H207V700ZM213 700V538H274V700ZM279 700V484H320V700ZM332 700V499L375 477V700ZM392 700V452L454 430V700ZM467 700V537H528V700ZM538 700V487H546.4V475H557.6V487H566V700ZM572 700V455L631 433V700ZM643 700V440H676V700ZM693 700V466L724 444V700ZM737 700V467H753.2V455H774.8V467H791V700ZM797 700V493H856V700ZM872 700V529H928V700ZM941 700V506H986V700ZM995 700V386H1009.1V374H1027.9V386H1042V700ZM1057 700V401L1096 379V700ZM1105 700V402H1153V700ZM1165 700V389L1205 367V700ZM1213 700V405L1270 383V700ZM1285 700V483H1293.5V463H1302.1V449H1328.9V463H1337.5V483H1346V700ZM1355 700V369H1389V700ZM1397 700V409H1404.8V389H1412.7V375H1437.3V389H1445.2V409H1453V700ZM1462 700V491L1510 469V700ZM1520 700V517H1528.4V497H1536.8V483H1563.2V497H1571.6V517H1580V700ZM1590 700V488H1600.5V476H1614.5V488H1625V700ZM1631 700V549H1637.2V529H1643.3V515H1662.7V529H1668.8V549H1675V700Z"/>
+        <path id="sky-mid" d="M205 700V455H217.6V443H234.4V455H247V700ZM262 700V442L298 420V700ZM312 700V438H358V700ZM372 700V392H383.4V380H398.6V392H410V700ZM424 700V458H430.2V438H436.3V424H455.7V438H461.8V458H468V700ZM482 700V426L516 404V700ZM530 700V446H542.6V434H559.4V446H572V700ZM586 700V470H622V700ZM946 700V414H959.2V402H976.8V414H990V700ZM1000 700V364H1056V700ZM1066 700V411L1090 385L1114 411V700ZM1124 700V347H1142.6V335H1167.4V347H1186V700ZM1196 700V432H1203V412H1210V398H1232V412H1239V432H1246V700ZM1256 700V372H1275.4V326H1280.6V372H1300V700ZM1310 700V420H1366V700ZM1376 700V414L1420 392V700ZM1430 700V446H1445V434H1465V446H1480V700ZM1490 700V424H1532V700ZM1542 700V502H1549.3V482H1556.6V468H1579.4V482H1586.7V502H1594V700Z"/>
+        <path id="sky-landmarks" d="M632 700V606Q740 520 848 606V700ZM836 700C848 560 864 440 868 335L866 330Q842 322 840 312L840 300Q844 286 868 280L871 200L866 197L866 186L872 182L876 178L879 79L881 79L884 178L888 182L894 186L894 197L889 200L892 280Q916 286 920 300L920 312Q918 322 894 330L892 335C896 440 912 560 924 700Z"/>
+        <path id="sky-front" d="M-20 700V548H42V700ZM52 700V502H65.2V490H82.8V502H96V700ZM106 700V554L158 532V700ZM168 700V484H208V700ZM218 700V558H225.6V538H233.1V524H256.9V538H264.4V558H272V700ZM282 700V472H293.4V460H308.6V472H320V700ZM330 700V510H380V700ZM390 700V510L434 488V700ZM444 700V538H460.8V526H483.2V538H500V700ZM510 700V512H552V700ZM560 700V558H596V700ZM934 700V522H980V700ZM990 700V474H1002V462H1018V474H1030V700ZM1040 700V534H1048.1V514H1056.2V500H1081.8V514H1089.9V534H1098V700ZM1108 700V468L1152 446V700ZM1162 700V488H1216V700ZM1226 700V434H1238V422H1254V434H1266V700ZM1276 700V510H1334V700ZM1344 700V496H1350.2V476H1356.3V462H1375.7V476H1381.8V496H1388V700ZM1398 700V496H1413.6V484H1434.4V496H1450V700ZM1460 700V496L1500 474V700ZM1510 700V528H1568V700ZM1576 700V496H1591V484H1611V496H1626V700Z"/>
 
-        <pattern id="xray-floors" width="12" height="9" patternUnits="userSpaceOnUse">
-          <path d="M0 0H12" class="xray-floor-line"/>
+        <!-- The inside of a building: floors with library books and dollar signs -->
+        <pattern id="cutaway" width="44" height="26" patternUnits="userSpaceOnUse">
+          <rect class="cut-wall" width="44" height="26"/>
+          <path class="cut-floor" d="M0 25.4H44"/>
+          <rect class="cut-book" x="6" y="9" width="11" height="15" rx="1"/>
+          <path class="cut-spine" d="M9 9V24"/>
+          <text class="cut-dollar" x="28" y="22">$</text>
         </pattern>
-        <pattern id="xray-grid" width="40" height="40" patternUnits="userSpaceOnUse">
-          <path d="M40 0H0V40" class="xray-grid-line"/>
-        </pattern>
-        <linearGradient id="grid-fade" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#000"/>
-          <stop offset="0.3" stop-color="#fff"/>
-        </linearGradient>
-        <mask id="grid-mask" maskUnits="userSpaceOnUse" x="-200" y="0" width="2000" height="700">
-          <rect x="-200" y="0" width="2000" height="700" fill="url(#grid-fade)"/>
-        </mask>
-        <linearGradient id="beam-glow" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#22D3EE" stop-opacity="0"/>
-          <stop offset="1" stop-color="#22D3EE" stop-opacity="0.28"/>
-        </linearGradient>
 
-        <linearGradient id="landmark-shade" gradientUnits="userSpaceOnUse" x1="0" y1="79" x2="0" y2="700">
-          <stop offset="0" stop-color="#47688F"/>
-          <stop offset="0.55" stop-color="#2C4868"/>
-          <stop offset="1" stop-color="#14263C"/>
-        </linearGradient>
-
-        <clipPath id="scan-done"><rect id="scan-done-rect" x="-200" y="0" width="2000" height="430"/></clipPath>
-        <clipPath id="scan-todo"><rect id="scan-todo-rect" x="-200" y="430" width="2000" height="270"/></clipPath>
+        <clipPath id="lake-clip"><rect x="-200" y="660" width="2000" height="120"/></clipPath>
+        <clipPath id="hero-lens-clip"><circle id="hero-lens-clip-circle" cx="930" cy="470" r="120"/></clipPath>
       </defs>
 
-      <!-- Below the beam: the skyline as residents see it -->
-      <g clip-path="url(#scan-todo)">
-        <use href="#sky-back" class="sky-solid sky-solid--back"/>
-        <use href="#sky-mid" class="sky-solid sky-solid--mid"/>
-        <use href="#sky-landmarks" class="sky-solid sky-solid--landmarks"/>
-        <path class="sky-solid-detail" d="M652 590Q740 560 828 590M690 700V560M740 700V548M790 700V560"/>
-        <path class="sky-windows" d="M1343 623h4v6h-4zM1505 510h4v6h-4zM610 517h4v6h-4zM536 480h4v6h-4zM1015 606h4v6h-4zM1042 541h4v6h-4zM1072 523h4v6h-4zM1514 601h4v6h-4zM1262 588h4v6h-4zM1033 476h4v6h-4zM1220 601h4v6h-4zM345 615h4v6h-4zM229 541h4v6h-4zM1325 545h4v6h-4zM211 619h4v6h-4zM1514 614h4v6h-4zM601 556h4v6h-4zM1436 519h4v6h-4zM961 630h4v6h-4zM1271 601h4v6h-4zM979 565h4v6h-4zM610 504h4v6h-4zM1325 454h4v6h-4zM229 606h4v6h-4zM1271 601h4v6h-4zM277 623h4v6h-4zM1400 569h4v6h-4zM1514 562h4v6h-4zM220 606h4v6h-4zM1090 601h4v6h-4zM457 458h4v6h-4zM1166 407h4v6h-4zM211 541h4v6h-4zM229 606h4v6h-4zM601 556h4v6h-4zM1042 515h4v6h-4zM277 558h4v6h-4zM457 627h4v6h-4zM497 451h4v6h-4zM1514 562h4v6h-4zM1099 575h4v6h-4zM1505 601h4v6h-4zM1280 458h4v6h-4zM1316 493h4v6h-4zM610 608h4v6h-4zM229 489h4v6h-4zM848 304h4v4h-4zM856 304h4v4h-4zM864 304h4v4h-4zM872 304h4v4h-4zM880 304h4v4h-4zM888 304h4v4h-4zM896 304h4v4h-4zM904 304h4v4h-4zM912 304h4v4h-4z"/>
-        <use href="#sky-front" class="sky-solid sky-solid--front"/>
+      <!-- The city as residents see it -->
+      <use href="#sky-back" class="city-back"/>
+      <use href="#sky-mid" class="city-mid"/>
+      <use href="#sky-landmarks" class="city-landmark"/>
+      <path class="city-ribs" d="M652 590Q740 560 828 590M690 660V560M740 660V548M790 660V560"/>
+      <path class="city-window" d="M1343 623h4v6h-4zM1505 510h4v6h-4zM610 517h4v6h-4zM536 480h4v6h-4zM1015 606h4v6h-4zM1042 541h4v6h-4zM1072 523h4v6h-4zM1514 601h4v6h-4zM1262 588h4v6h-4zM1033 476h4v6h-4zM1220 601h4v6h-4zM345 615h4v6h-4zM229 541h4v6h-4zM1325 545h4v6h-4zM211 619h4v6h-4zM1514 614h4v6h-4zM601 556h4v6h-4zM1436 519h4v6h-4zM961 630h4v6h-4zM1271 601h4v6h-4zM979 565h4v6h-4zM610 504h4v6h-4zM1325 454h4v6h-4zM229 606h4v6h-4zM1271 601h4v6h-4zM277 623h4v6h-4zM1400 569h4v6h-4zM1514 562h4v6h-4zM220 606h4v6h-4zM1090 601h4v6h-4zM457 458h4v6h-4zM1166 407h4v6h-4zM211 541h4v6h-4zM229 606h4v6h-4zM601 556h4v6h-4zM1042 515h4v6h-4zM277 558h4v6h-4zM457 627h4v6h-4zM497 451h4v6h-4zM1514 562h4v6h-4zM1099 575h4v6h-4zM1505 601h4v6h-4zM1280 458h4v6h-4zM1316 493h4v6h-4zM610 608h4v6h-4zM229 489h4v6h-4zM848 304h4v4h-4zM856 304h4v4h-4zM864 304h4v4h-4zM872 304h4v4h-4zM880 304h4v4h-4zM888 304h4v4h-4zM896 304h4v4h-4zM904 304h4v4h-4zM912 304h4v4h-4z"/>
+      <use href="#sky-front" class="city-front"/>
+
+      <!-- Lake Ontario with a soft mirrored reflection -->
+      <rect class="lake-band" x="-200" y="660" width="2000" height="120"/>
+      <g clip-path="url(#lake-clip)">
+        <g class="lake-reflection" transform="translate(0 1320) scale(1 -1)">
+          <use href="#sky-mid"/>
+          <use href="#sky-landmarks"/>
+          <use href="#sky-front"/>
+        </g>
+        <path class="lake-ripples" d="M0 672h50M197 687h87M394 702h124M591 717h71M788 732h108M985 747h55M1182 762h92M1379 672h129M1576 687h76M173 702h113M370 717h60M567 732h97M764 747h134M961 762h81M1158 672h118M1355 687h65M1552 702h102M149 717h139M346 732h86M543 747h123M740 762h70M937 672h107M1134 687h54M1331 702h91M1528 717h128M125 732h75"/>
       </g>
 
-      <!-- Above the beam: the same geometry as an x-ray wireframe -->
-      <g clip-path="url(#scan-done)">
-        <rect x="-200" y="0" width="2000" height="700" fill="url(#xray-grid)" mask="url(#grid-mask)"/>
-        <use href="#sky-back" class="sky-xray sky-xray--back"/>
-        <use href="#sky-mid" class="sky-xray sky-xray--mid"/>
-        <use href="#sky-landmarks" class="sky-xray sky-xray--landmarks"/>
-        <path class="sky-xray-detail" d="M880 335V700M880 200V335M842 306H918M880 86V178M652 590Q740 560 828 590M690 700V560M740 700V548M790 700V560M857 500H903M851 580H909M847 640H913"/>
-        <use href="#sky-front" class="sky-xray sky-xray--front"/>
+      <!-- Inside the lens: the same buildings as magnified cutaways -->
+      <g clip-path="url(#hero-lens-clip)">
+        <g id="hero-lens-zoom" transform="translate(930 470) scale(1.5) translate(-930 -470)">
+          <rect class="cut-sky" x="-200" y="-200" width="2000" height="860"/>
+          <use href="#sky-back" class="cut-back"/>
+          <use href="#sky-mid" class="cut-building"/>
+          <use href="#sky-landmarks" class="cut-building"/>
+          <use href="#sky-front" class="cut-building"/>
+          <rect class="cut-lake" x="-200" y="660" width="2000" height="300"/>
+        </g>
       </g>
 
-      <g id="scan-beam" transform="translate(0 430)">
-        <rect x="-200" y="-60" width="2000" height="60" fill="url(#beam-glow)"/>
-        <rect class="scan-beam__line" x="-200" y="-1" width="2000" height="2"/>
+      <g id="hero-lens" transform="translate(930 470)">
+        <path class="hero-lens__handle" d="M90 90L168 168"/>
+        <circle class="hero-lens__ring" r="120"/>
+        <circle class="hero-lens__rim" r="114"/>
       </g>
     </svg>
 
@@ -122,8 +119,8 @@
     <!-- 1. Hook (Connie) -->
     <section class="section reveal" id="hook" data-stage="Hook" aria-labelledby="hook-title">
       <div class="section__inner">
-        <p class="eyebrow">01 · Hook</p>
-        <h2 id="hook-title"><span class="num">100</span> library branches. One in every neighbourhood?</h2>
+        <p class="eyebrow">01 · The hook</p>
+        <h2 id="hook-title">100 library branches. One in every neighbourhood?</h2>
         <p class="lead">Toronto has 158 neighbourhoods. Many of them have no physical library branch inside their boundaries.</p>
 
         <figure class="chart-figure">
@@ -136,9 +133,9 @@
     </section>
 
     <!-- 2. Rising insight 1 (Jacob) -->
-    <section class="section reveal" id="rising-1" data-stage="Rising 1" aria-labelledby="rising-1-title">
+    <section class="section reveal" id="rising-1" data-stage="Budget" aria-labelledby="rising-1-title">
       <div class="section__inner">
-        <p class="eyebrow">02 · Rising insight 1</p>
+        <p class="eyebrow">02 · Budget</p>
         <h2 id="rising-1-title">Where does the budget go?</h2>
         <p class="lead">Four of our eight selected services make up most of the selected total.</p>
 
@@ -164,9 +161,9 @@
     </section>
 
     <!-- 3. Rising insight 2 (Jacob) -->
-    <section class="section reveal" id="rising-2" data-stage="Rising 2" aria-labelledby="rising-2-title">
+    <section class="section reveal" id="rising-2" data-stage="Gross vs net" aria-labelledby="rising-2-title">
       <div class="section__inner">
-        <p class="eyebrow">03 · Rising insight 2</p>
+        <p class="eyebrow">03 · Gross vs net</p>
         <h2 id="rising-2-title">Change the lens: gross vs net</h2>
         <p class="lead">Children's Services and Toronto Public Library swap places when the measure changes.</p>
 
@@ -191,9 +188,9 @@
     </section>
 
     <!-- 4. Rising insight 3 (Ken) -->
-    <section class="section reveal" id="rising-3" data-stage="Rising 3" aria-labelledby="rising-3-title">
+    <section class="section reveal" id="rising-3" data-stage="Per resident" aria-labelledby="rising-3-title">
       <div class="section__inner">
-        <p class="eyebrow">04 · Rising insight 3</p>
+        <p class="eyebrow">04 · Per resident</p>
         <h2 id="rising-3-title">How do library branches compare per resident?</h2>
         <p class="lead">The higher-income group has about 21% more physical branches per 10,000 residents than the lower-income group.</p>
 

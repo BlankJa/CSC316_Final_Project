@@ -67,84 +67,40 @@ function setUpProgressNav() {
   [titleScreen, ...sections].forEach((el) => observer.observe(el));
 }
 
-// Light nav text over the dark hero, dark text everywhere else.
-function setUpNavTheme() {
-  const nav = document.querySelector('.progress');
-  const hero = document.querySelector('.hero');
-  const observer = new IntersectionObserver(([entry]) => {
-    nav.classList.toggle('progress--on-dark', entry.isIntersecting);
-  }, { rootMargin: `-${nav.offsetHeight + 1}px 0px 0px 0px` });
-  observer.observe(hero);
-}
+// Moves the hero magnifier with the mouse. The markup holds its resting position over
+// the CN Tower, which is what touch, reduced-motion and no-JS visitors see.
+function setUpHeroLens() {
+  const ZOOM = 1.5;
+  const MIN_Y = 150;
+  const MAX_Y = 640;
 
-// Moves the hero scan beam. Above the beam the skyline shows as an x-ray wireframe.
-// The markup already holds the static half-scanned state used for reduced motion.
-function setUpHeroScan() {
-  const REST_Y = 430;
-  const BOTTOM_Y = 690;
-  const FOLLOW_RANGE = 120;
-  const DOWN_MS = 2400;
-  const BACK_MS = 1000;
+  const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!canHover || reduceMotion) return;
 
   const hero = document.querySelector('.hero');
-  const beam = document.getElementById('scan-beam');
-  const doneRect = document.getElementById('scan-done-rect');
-  const todoRect = document.getElementById('scan-todo-rect');
+  const svg = document.getElementById('hero-skyline');
+  const lens = document.getElementById('hero-lens');
+  const clip = document.getElementById('hero-lens-clip-circle');
+  const zoom = document.getElementById('hero-lens-zoom');
+  let point = null;
+  let frame = null;
 
-  function setBeam(y) {
-    beam.setAttribute('transform', `translate(0 ${y})`);
-    doneRect.setAttribute('height', y);
-    todoRect.setAttribute('y', y);
-    todoRect.setAttribute('height', 700 - y);
-  }
-
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-  const easeInOut = (t) => (t < 0.5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2);
-  const easeOut = (t) => 1 - (1 - t) ** 3;
-  let current = REST_Y;
-  let target = REST_Y;
-  let followFrame = null;
-  let swept = false;
-
-  function follow() {
-    current += (target - current) * 0.08;
-    setBeam(current);
-    followFrame = Math.abs(target - current) > 0.5 ? requestAnimationFrame(follow) : null;
-  }
-
-  function requestFollow() {
-    if (swept && followFrame === null) followFrame = requestAnimationFrame(follow);
+  function applyPosition() {
+    frame = null;
+    const { x, y } = point;
+    lens.setAttribute('transform', `translate(${x} ${y})`);
+    clip.setAttribute('cx', x);
+    clip.setAttribute('cy', y);
+    zoom.setAttribute('transform', `translate(${x} ${y}) scale(${ZOOM}) translate(${-x} ${-y})`);
   }
 
   hero.addEventListener('pointermove', (event) => {
     if (event.pointerType === 'touch') return;
-    const rect = hero.getBoundingClientRect();
-    target = REST_Y + ((event.clientY - rect.top) / rect.height - 0.5) * 2 * FOLLOW_RANGE;
-    requestFollow();
+    const p = new DOMPoint(event.clientX, event.clientY).matrixTransform(svg.getScreenCTM().inverse());
+    point = { x: p.x, y: Math.min(MAX_Y, Math.max(MIN_Y, p.y)) };
+    if (frame === null) frame = requestAnimationFrame(applyPosition);
   });
-  hero.addEventListener('pointerleave', () => {
-    target = REST_Y;
-    requestFollow();
-  });
-
-  const start = performance.now();
-  function sweep(now) {
-    const elapsed = now - start;
-    if (elapsed < DOWN_MS) {
-      setBeam(BOTTOM_Y * easeInOut(elapsed / DOWN_MS));
-      requestAnimationFrame(sweep);
-    } else if (elapsed < DOWN_MS + BACK_MS) {
-      setBeam(BOTTOM_Y + (REST_Y - BOTTOM_Y) * easeOut((elapsed - DOWN_MS) / BACK_MS));
-      requestAnimationFrame(sweep);
-    } else {
-      setBeam(REST_Y);
-      swept = true;
-      requestFollow();
-    }
-  }
-  setBeam(0);
-  requestAnimationFrame(sweep);
 }
 
 function setUpChecklist() {
@@ -165,7 +121,6 @@ function setUpChecklist() {
 
 setUpReveals();
 setUpProgressNav();
-setUpNavTheme();
-setUpHeroScan();
+setUpHeroLens();
 setUpChecklist();
 CHARTS.forEach(loadChart);

@@ -1,45 +1,52 @@
 /* City X-ray shared design tokens.
-   Use these in every chart: .style('fill', 'var(--accent)') in D3, var(--accent) in CSS.
+   Use these in every chart: .style('fill', 'var(--lake)') in D3, var(--lake) in CSS.
 
    Contrast rules (WCAG AA):
-   - --text, --ink and --muted are safe as text on --bg and --surface.
-   - --accent is the data and link colour on light backgrounds. Safe as text there.
-   - --xray and --warm fail as text on light backgrounds. Use them on --ink, or as
-     strokes and small markers next to a text label.
-   - Tints are fills only. Put --text on them and give them a --ink outline, because
-     a tint alone is under 3:1 against the page.
+   - --ink is safe as text on every light colour here.
+   - --muted is for text on --paper or --surface only.
+   - --lake and --brick are safe as text on --paper and --surface. On --sand or --sky
+     --brick passes for large text only (24px or more).
+   - --park and --sun are never text. Use them for marks next to a text label.
+   - Tints are fills: put --ink on them and give them an --ink outline.
    - Never use colour as the only signal: add a label, pattern or position. */
 
 :root {
-  /* Core palette */
-  --ink: #0E1A2B;
-  --text: #1F2937;
-  --muted: #5B6472;
-  --bg: #F7F8FA;
-  --surface: #FFFFFF;
-  --rule: #DDE1E7;
+  /* Paper and ink */
+  --paper: #FAF6EF;
+  --surface: #FFFDF9;
+  --ink: #2A2420;
+  --muted: #6B5F55;
 
-  /* Accents */
-  --xray: #22D3EE;
-  --accent: #0F766E;
-  --warm: #F59E0B;
+  /* Toronto palette */
+  --brick: #B5543C;
+  --lake: #2F6B8A;
+  --park: #5E8C61;
+  --sand: #E9D8BE;
+  --sky: #F3C9A0;
+  --sun: #E8A33D;
 
-  /* Category tints for charts, in teal, blue and amber families */
-  --tint-teal: #BFE7E1;
-  --tint-teal-deep: #7CCFC2;
-  --tint-blue: #C7DCF5;
-  --tint-amber: #FCE3B0;
+  /* Chart fills */
+  --tint-lake: #BBD3DF;
+  --tint-park: #C5D9BF;
+  --tint-brick: #E9BFB1;
 
-  /* Text on dark surfaces */
-  --on-dark: #EEF3F8;
-  --on-dark-muted: #AEBBCB;
-  --panel-deep: #06101E;
+  /* Text and panels on the warm dark surface */
+  --cream: #F6EEDF;
+  --panel-xray: #43352C;
+
+  /* Hero illustration */
+  --city-back: #DDA98A;
+  --city-mid: #B97F66;
+  --city-landmark: #7D4C3C;
+  --city-front: #5A3A2E;
+  --city-window: #F8E3B0;
+  --lake-reflection: #1F4F69;
 
   /* Skeleton shapes for charts still in development */
-  --skeleton: #E7EAEF;
+  --skeleton: var(--sand);
 
   /* Fonts */
-  --font-display: "Space Grotesk", "Inter", system-ui, sans-serif;
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
   --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 
   /* Type scale */
@@ -59,19 +66,19 @@
   /* Layout */
   --content-max: 76rem;
   --gutter: 1rem;
-  --radius: 10px;
+  --radius: 6px;
   --nav-height: 2.75rem;
   --section-gap: clamp(4rem, 3rem + 5vw, 7.5rem);
 
   /* Earlier names, still used by the stub TODO blocks and README palette table */
-  --paper: var(--bg);
   --card: var(--surface);
-  --grid: var(--rule);
-  --peach: var(--tint-amber);
-  --rose: var(--tint-blue);
-  --teal: var(--tint-teal);
-  --lime: var(--tint-teal-deep);
-  --highlight: var(--tint-amber);
+  --grid: var(--sand);
+  --peach: var(--sky);
+  --rose: var(--tint-brick);
+  --teal: var(--tint-lake);
+  --lime: var(--tint-park);
+  --highlight: var(--sand);
+  --accent: var(--lake);
 }
 
 @media (min-width: 48rem) {
