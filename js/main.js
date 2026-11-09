@@ -6,7 +6,7 @@ import { renderError } from './utils/placeholder.js';
 const CHARTS = [
   { selector: '#hook-chart', module: './charts/hook.js', exportName: 'renderHook', dataPath: 'data/hook_summary.json' },
   { selector: '#treemap-chart', module: './charts/treemap.js', exportName: 'renderTreemap', dataPath: 'data/operating_budget_2025.csv' },
-  { selector: '#grossnet-chart', module: './charts/grossNet.js', exportName: 'renderGrossNet', dataPath: 'data/operating_budget_2025.csv' },
+  { selector: '#grossnet-chart', module: './charts/grossNet.js', exportName: 'renderGrossNet', dataPath: null },
   { selector: '#library-chart', module: './charts/libraryRates.js', exportName: 'renderLibraryRates', dataPath: 'data/library_rates.csv' },
   { selector: '#lens-chart', module: './charts/lens.js', exportName: 'renderLens', dataPath: null },
 ];

@@ -7,7 +7,7 @@ Connect a new file by setting `dataPath` for its chart in the `CHARTS` list in `
 | File | Status | Used by | Owner |
 |---|---|---|---|
 | `hook_summary.json` | Present | `js/charts/hook.js` | Connie |
-| `operating_budget_2025.csv` | Present | `js/charts/treemap.js`, `js/charts/grossNet.js` | Jacob |
+| `operating_budget_2025.csv` | Present | `js/charts/treemap.js` | Jacob |
 | `operating_budget_2025_lines.csv` | Present | Treemap lenses and itemised receipts | Jacob |
 | `library_rates.csv` | Present | `js/charts/libraryRates.js` | Ken |
 
